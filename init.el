@@ -1,3 +1,7 @@
+;;; init.el --- Min alldeles egna.
+;;; Commentary:
+
+
 (require 'package)
 (add-to-list 'package-archives
              '("melpa" . "https://melpa.org/packages/"))
@@ -34,7 +38,8 @@
    ("M-y"     . helm-show-kill-ring)
    :map helm-map
    ("<tab>" . helm-execute-persistent-action)
-   ("C-z"   . helm-select-action)))
+   ("C-z"   . helm-select-action))
+  :ensure company)
 (use-package helm-swoop
   :bind
   ("C-s" . helm-swoop))
@@ -83,7 +88,7 @@
 (scroll-bar-mode -1)
 (setq inhibit-startup-message t)
 (defalias 'yes-or-no-p 'y-or-n-p)
-(set-default-font "Inconsolata-14")
+(set-frame-font "Inconsolata-14")
 
 (use-package smartparens-config
   :ensure smartparens
@@ -103,6 +108,9 @@
 
 
 ;; Jobb
+(use-package magit
+  :bind
+  ("C-c C-g" . magit-status))
 (use-package tex
   :ensure auctex
   :config
@@ -117,10 +125,7 @@
      "pdflatex -shell-escape"
      ConTeXt-engine))
      (setq-default TeX-engine 'default-shell-escape)))
-(use-package rtags
-  :bind
-  ("M-." . rtags-find-symbol-at-point)
-  ("M-," . rtags-location-stack-back))
+(use-package rtags)
 (use-package cc-mode
   :init
   (add-hook 'c-mode-common-hook 'rtags-start-process-unless-running)
@@ -128,6 +133,10 @@
   :config
   (setq rtags-autostart-diagnostics t
 	rtags-completions-enabled t)
+  :bind
+  (:map c-mode-base-map
+   ("M-." . rtags-find-symbol-at-point)
+   ("M-," . rtags-location-stack-back))
   :ensure rtags
   :ensure company)
 (use-package matlab-mode)
